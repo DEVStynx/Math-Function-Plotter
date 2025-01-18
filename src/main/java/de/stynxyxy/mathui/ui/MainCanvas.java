@@ -1,6 +1,7 @@
 package de.stynxyxy.mathui.ui;
 
 import de.stynxyxy.mathui.objects.Function;
+import de.stynxyxy.mathui.objects.PowerFunction;
 import de.stynxyxy.mathui.objects.Vector2;
 import de.stynxyxy.mathui.util.GuiUtil;
 
@@ -35,7 +36,7 @@ public class MainCanvas extends JPanel {
         int i = 1;
         for (Function function: functions) {
             graphics2D.setColor(new Color(r.nextInt(0,255),r.nextInt(0,255),r.nextInt(0,255)));
-            drawFunction(function.getFactora(),function.getExponent(),graphics2D,i *-25);
+            drawFunction(function,graphics2D,i *-25);
             i++;
         }
     }
@@ -74,7 +75,7 @@ public class MainCanvas extends JPanel {
         }
     }
 
-    public void drawFunction(double factora,double exponent, Graphics2D g,int ypos) {
+    public void drawFunction(Function function, Graphics2D g,int ypos) {
         double scale = 25.0;
 
 
@@ -82,10 +83,14 @@ public class MainCanvas extends JPanel {
         double endX = GuiUtil.getScreenMiddle().x() / scale;
         double step = 0.1;
 
-        Vector2 from = GuiUtil.translateCoordsForFunction(startX, factora * Math.pow(startX, exponent));
-        g.drawString("f(x) = "+factora+"*x^"+exponent,500,500+ypos);
+        Vector2 from = GuiUtil.translateCoordsForFunction(startX, function.calcY(startX));
+        if (function instanceof PowerFunction f) {
+            g.drawString("f(x) = "+f.factor+"*x^"+f.exponent,500,500+ypos);
+        }
+
         for (double x = startX; x <= endX; x += step) {
-            double y = Math.pow(x, exponent);
+            double y = function.calcY(x);
+
             Vector2 to = GuiUtil.translateCoordsForFunction(x, y);
 
 

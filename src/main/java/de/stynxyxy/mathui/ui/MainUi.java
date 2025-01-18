@@ -2,6 +2,7 @@ package de.stynxyxy.mathui.ui;
 
 import de.stynxyxy.mathui.Main;
 import de.stynxyxy.mathui.objects.Function;
+import de.stynxyxy.mathui.objects.PowerFunction;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -27,18 +28,29 @@ public class MainUi extends JFrame {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(new Dimension(size));
         Scanner s = new Scanner(System.in);
+
+        //System.out.print("How many functions do you want to Draw?");
+        //int num = s.nextInt();
+        Function[] functions = new Function[2];
         /*
-        System.out.print("How many functions do you want to Draw?");
-        int num = s.nextInt();
-        Function[] functions = new Function[num];
         for (int i = 0; i < num; i++) {
             functions[i] = getFunctionByInput(i,s);
         }
-
          */
-        Function[] functions = new Function[2];
-        functions[0] = new Function(0.5,1);
-        functions[1] = new Function(2,1);
+        functions[0] = new Function() {
+            @Override
+            public double calcY(double x) {
+                return 2*x;
+            }
+        };
+        functions[1] = new Function() {
+            @Override
+            public double calcY(double x) {
+                return Math.sin(x);
+            }
+        };
+
+
         drawF(functions);
 
 
@@ -51,7 +63,7 @@ public class MainUi extends JFrame {
         double exponent = s.nextDouble();
         System.out.println("\nFactor a:");
         double factora = s.nextDouble();
-        return new Function(exponent,factora);
+        return new PowerFunction(exponent,factora);
     }
 
     private void drawF(Function[] function) {
